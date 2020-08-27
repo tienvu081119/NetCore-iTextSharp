@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
+using NetBarcode;
 namespace iTextSharp.Reports
 {
     public class StudentReport
@@ -55,7 +55,7 @@ namespace iTextSharp.Reports
 
             this.ReportHeader();
             this.EmptyRow(2);
-            this.ReportBody();
+            this.ReportBody();         
 
             _pdfTable.HeaderRows = 2;
             _document.Add(_pdfTable);
@@ -74,6 +74,11 @@ namespace iTextSharp.Reports
 
             _pdfCell = new PdfPCell(this.SetPageTitle());
             _pdfCell.Colspan = _maxColumn-1;
+            _pdfCell.Border = 0;
+            _pdfTable.AddCell(_pdfCell);
+
+            _pdfCell = new PdfPCell(this.BarCode());
+            _pdfCell.Colspan = _maxColumn - 1;
             _pdfCell.Border = 0;
             _pdfTable.AddCell(_pdfCell);
 
@@ -188,6 +193,35 @@ namespace iTextSharp.Reports
 
                 _pdfTable.CompleteRow();
             }
+
+        }
+
+        private PdfPTable BarCode()
+        {
+
+            var barcode = new NetBarcode.Barcode("543534", NetBarcode.Type.Code128, true);
+            var image = barcode.GetImage();
+            int maxColumn = 1;
+
+        
+            PdfPTable pdfPTable = new PdfPTable(maxColumn);
+
+            string path = _webHostEnvironment.WebRootPath + "/Images";
+
+            string imgCombine = Path.Combine(path, "Logo.png");
+            System.Drawing.Imaging.ImageFormat format;
+            format = System.Drawing.Imaging.ImageFormat.Bmp;
+            Image img = Image.GetInstance(image, format);
+
+            _pdfCell = new PdfPCell(img);
+            _pdfCell.Colspan = maxColumn;
+            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            _pdfCell.Border = 0;
+            _pdfCell.ExtraParagraphSpace = 0;
+            pdfPTable.AddCell(_pdfCell);
+            pdfPTable.CompleteRow();
+
+            return pdfPTable;
 
         }
     }

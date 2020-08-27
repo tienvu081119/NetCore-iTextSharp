@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.7" />
+    <PackageReference Include="NetBarcode" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetBarcode\NetBarcode.csproj" />
   </ItemGroup>
 
 </Project>
