@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<button id="btnPdf">Generate Pdf</button>
+
+<script type="text/javascript">
+    $("#btnPdf").click(function () {
+        debugger;
+        window.open('../Home/PrintStudent?param=1', '_blank');
+    })
+</script>
